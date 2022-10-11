@@ -9,7 +9,7 @@ import datetime
 
 import altair as alt
 
-st.header('Tarot')
+st.header('Tarot Assistant')
 
 # Opening JSON file
 f = open('tarot-images.json')
@@ -21,9 +21,9 @@ cards = data['cards']
 
 
 if "session_cards" not in st.session_state:
-    placeholder = st.empty()
+    button_placeholder = st.empty()
     # button_trek_kaart = st.button('Trek kaarten')
-    button_trek_kaart = placeholder.button('Trek kaarten')
+    button_trek_kaart = button_placeholder.button('Trek kaarten')
 
 if "session_cards" not in st.session_state and button_trek_kaart == True :
     nr_cards=3
@@ -31,7 +31,7 @@ if "session_cards" not in st.session_state and button_trek_kaart == True :
 
     st.session_state["session_cards"] = random_cards
 
-    placeholder.empty()
+    button_placeholder.empty()
 
 if "session_cards"  in st.session_state:
     current_card_numbers = st.session_state["session_cards"]
@@ -50,12 +50,24 @@ if "session_cards"  in st.session_state:
 
 
     st.text('My dearest, your fortune reading is about your past, present and future.')
-    st.write('**Regarding your past**:')
-    st.write(past_dict['fortune_telling'])
 
-    st.write('**Regarding your present**:')
-    st.write(present_dict['fortune_telling'])
+    expander_past = st.expander("Regarding your past")
+    expander_past.write(f"""
+        Your past card is {past_dict['name']}. 
+    """)
+    expander_past.write(random.choice(past_dict['fortune_telling']))
+    
+    expander_present = st.expander("Regarding your present")
+    expander_present.write(f"""
+        Your present card is {present_dict['name']}
+    """)
+    expander_present.write(random.choice(present_dict['fortune_telling']))
 
-    st.write('**Regarding your future**:')
-    st.write(future_dict['fortune_telling'])
+
+    expander_future = st.expander("Regarding your future")
+    expander_future.write(f"""
+        Your future card is {future_dict['name']}
+    """)
+    expander_future.write(random.choice(future_dict['fortune_telling']))
+
 
